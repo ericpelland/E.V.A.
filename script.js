@@ -9,15 +9,39 @@ var tempCommand
 var tempResponse
 var triggers = []
 var commands = []
-
+var faceId = 3;
+chatBotEnabled = false
+nospeecherror = false
 readData()
+giphy("face", faceId, false)
 
 /*-----------------------------
      Command Functions
 ------------------------------*/
 
+function tempGiphy(search) {
+  giphy(search, 0, false)
+  setTimeout(() => {
+    giphy("face", faceId, false)
+  }, 15000)
+}
+
+function changeFace() {
+  if (faceId < 20) {
+    faceId++;
+  } else {
+    faceId = 0;
+  }
+  giphy("face", faceId)
+}
+
+function toggleChatBot() {
+  chatBotEnabled = !chatBotEnabled
+}
+
 function addTrigger(trigger) {
   triggers.push(trigger)
+  writeData()
   readOutLoud(getResponseFromArrays(commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommandStep].responseArray, [trigger]))
 }
 
@@ -42,6 +66,21 @@ function addCommandResponse(response) {
 
 function writeData() {
   $.post('/write', JSON.stringify({ triggers: triggers, commands: commands }), () => { })
+}
+
+function chatbot(text) {
+  $.post('/chatbot', text, (data) => {
+    readOutLoud(data)
+  })
+}
+
+function giphy(text, index = 0, restartRecognition = true) {
+  $.post('/giphy', text, (data) => {
+    $('#mediaContainer').html("<img style='max-height:200px;' src='" + data[index].images.original.url + "'/>")
+    if (restartRecognition) {
+      recognition.start()
+    }
+  })
 }
 
 function getResponseFromArrays(arr1, arr2) {
@@ -103,6 +142,11 @@ recognition.continuous = true;
 
 recognition.onresult = (event) => {
   recognition.onend = () => {
+    if (nospeecherror) {
+      nospeecherror = false;
+      recognition.start()
+      return;
+    }
     $('#userInput').val('')
     var current = event.resultIndex;
     var transcript = event.results[current][0].transcript;
@@ -111,7 +155,7 @@ recognition.onresult = (event) => {
       console.log(transcript.toLowerCase())
       if (awaitingResponse) {
         addtoConversation(transcript)
-        commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommandStep].func(transcript.toLowerCase())
+        eval(commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommandStep].funcName)(transcript.toLowerCase());
         if (awaitingResponseFromCommandStep == commands[awaitingResponseFromCommandId].steps.length - 1) {
           awaitingResponseFromCommandStep = 0
           awaitingResponse = false
@@ -125,22 +169,48 @@ recognition.onresult = (event) => {
           addtoConversation(transcript);
           var commandFound = false
           for (var j = 0; j < commands.length; j++) {
-            if (transcript.toLowerCase() == triggers[i] + " " + commands[j].command) {
-              commandFound = true
-              if (commands[j].steps && commands[j].steps.length > 0) {
-                awaitingResponseFromCommandId = j
-                awaitingResponseFromCommandStep = 0
-                awaitingResponse = true
+            for (var k = 0; k < commands[j].inputs.length; k++) {
+              let cmd = commands[j].inputs[k]
+              let param;
+              if (cmd.indexOf('*') == (cmd.length - 1)) {
+                cmd = cmd.substring(0, cmd.length - 2)
               }
-              readOutLoud(commands[j].response)
-              return
+              if (transcript.toLowerCase().indexOf(triggers[i] + " " + cmd) == 0) {
+                param = transcript.toLowerCase().substring((triggers[i] + " " + cmd).length).trim()
+                console.log('-------------')
+                console.log(cmd)
+                console.log(param)
+                console.log('-------------')
+                commandFound = true
+                if (commands[j].steps && commands[j].steps.length > 0) {
+                  awaitingResponseFromCommandId = j
+                  awaitingResponseFromCommandStep = 0
+                  awaitingResponse = true
+                }
+                if (commands[j].funcName) {
+                  eval(commands[j].funcName)(param)
+                }
+                readOutLoud(commands[j].responseArray[Math.floor(Math.random() * Math.floor(commands[j].responseArray.length))])
+                return
+              }
             }
           }
           if (!commandFound) {
-            readOutLoud("Sorry, I do not recognize that command")
+            if (transcript.toLowerCase() == triggers[i]) {
+
+            } else if (chatBotEnabled) {
+              chatbot(transcript.toLowerCase().substring(triggers[i].length).trim())
+            } else {
+              readOutLoud("I am sorry, I do not recognize that command.")
+            }
             return
           }
         }
+      }
+      if (chatBotEnabled) {
+        addtoConversation(transcript);
+        chatbot(transcript)
+        return
       }
     }
     recognition.start()
@@ -149,6 +219,9 @@ recognition.onresult = (event) => {
 };
 
 recognition.onerror = function (event) {
+  if (event.error == 'no-speech') {
+    nospeecherror = true
+  }
   if (event.error !== 'aborted') {
     console.log(event.error)
   }
@@ -162,7 +235,7 @@ function readOutLoud(message) {
   var speech = new SpeechSynthesisUtterance();
   speech.voice = getVoiceFromName("Google US English")
   speech.text = message;
-  speech.volume = 0;
+  speech.volume = 1;
   speech.rate = 1;
   speech.pitch = 1;
   window.speechSynthesis.speak(speech);

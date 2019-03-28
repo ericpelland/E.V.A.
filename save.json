@@ -2,22 +2,31 @@
     "triggers": [
         "eva",
         "hey eva",
-        "hi eva"
+        "hi eva",
+        "hello eva",
+        "yo eva"
     ],
     "commands": [
         {
-            "command": "are you listening",
-            "response": "Yes, I am always listening"
+            "inputs": [
+                "are you listening",
+                "can you hear me"
+            ],
+            "responseArray": [
+                "Yes, I am always listening",
+                "Yes, I can hear you"
+            ]
         },
         {
-            "command": "can you hear me",
-            "response": "Yes, I can hear you"
-        },
-        {
-            "command": "add trigger",
-            "response": "Sure, what should the trigger be",
+            "inputs": [
+                "add trigger"
+            ],
+            "responseArray": [
+                "Sure, what should the trigger be"
+            ],
             "steps": [
                 {
+                    "funcName": "addTrigger",
                     "responseArray": [
                         "Ok,",
                         "added as a trigger"
@@ -26,16 +35,31 @@
             ]
         },
         {
-            "command": "add simple command",
-            "response": "Sure, what should the command be",
+            "inputs": [
+                "toggle chatbot"
+            ],
+            "funcName": "toggleChatBot",
+            "responseArray": [
+                "Chatbot toggled"
+            ]
+        },
+        {
+            "inputs": [
+                "add simple command"
+            ],
+            "responseArray": [
+                "Sure, what should the command be"
+            ],
             "steps": [
                 {
+                    "funcName": "addCommand",
                     "responseArray": [
                         "Ok,",
                         "added as a command. What should my response be"
                     ]
                 },
                 {
+                    "funcName": "addCommandResponse",
                     "responseArray": [
                         "Ok,",
                         "added as the response."
@@ -44,8 +68,28 @@
             ]
         },
         {
-            "command": "party mode",
-            "response": "party party party"
+            "inputs": [
+                "change your face",
+                "can you look different",
+                "change your look",
+                "change your appearence"
+            ],
+            "funcName": "changeFace",
+            "responseArray": [
+                "I changed my face for you",
+                "I hope that works better for you",
+                "Face changed"
+            ]
+        },
+        {
+            "inputs": [
+                "can you *",
+                "show me *"
+            ],
+            "funcName": "tempGiphy",
+            "responseArray": [
+                "Sure, watch"
+            ]
         }
     ]
 }

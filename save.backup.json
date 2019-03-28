@@ -2,7 +2,8 @@
     "triggers": [
         "eva",
         "hey eva",
-        "hi eva"
+        "hi eva",
+        "hello eva"
     ],
     "commands": [
         {
@@ -18,6 +19,7 @@
             "response": "Sure, what should the trigger be",
             "steps": [
                 {
+                    "funcName": "addTrigger",
                     "responseArray": [
                         "Ok,",
                         "added as a trigger"
@@ -26,16 +28,23 @@
             ]
         },
         {
+            "command": "toggle chatbot",
+            "funcName": "toggleChatBot",
+            "response": "Chatbot toggled"
+        },
+        {
             "command": "add simple command",
             "response": "Sure, what should the command be",
             "steps": [
                 {
+                    "funcName": "addCommand",
                     "responseArray": [
                         "Ok,",
                         "added as a command. What should my response be"
                     ]
                 },
                 {
+                    "funcName": "addCommandResponse",
                     "responseArray": [
                         "Ok,",
                         "added as the response."

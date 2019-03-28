@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dialogflow": "^0.8.2",
     "express": "^4.16.4",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "giphy-api": "^2.0.1",
+    "uuid": "^3.3.2"
   }
 }
