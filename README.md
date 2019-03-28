@@ -18,7 +18,7 @@
 
 
 ## Install
-git clone https://github.com/ericpelland/E.V.A./
-cd E.V.A./
-npm install
-node index.js
+* git clone https://github.com/ericpelland/E.V.A./
+* cd E.V.A./
+* npm install
+* node index.js
