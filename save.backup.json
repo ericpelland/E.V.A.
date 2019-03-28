@@ -1,0 +1,51 @@
+{
+    "triggers": [
+        "eva",
+        "hey eva",
+        "hi eva"
+    ],
+    "commands": [
+        {
+            "command": "are you listening",
+            "response": "Yes, I am always listening"
+        },
+        {
+            "command": "can you hear me",
+            "response": "Yes, I can hear you"
+        },
+        {
+            "command": "add trigger",
+            "response": "Sure, what should the trigger be",
+            "steps": [
+                {
+                    "responseArray": [
+                        "Ok,",
+                        "added as a trigger"
+                    ]
+                }
+            ]
+        },
+        {
+            "command": "add simple command",
+            "response": "Sure, what should the command be",
+            "steps": [
+                {
+                    "responseArray": [
+                        "Ok,",
+                        "added as a command. What should my response be"
+                    ]
+                },
+                {
+                    "responseArray": [
+                        "Ok,",
+                        "added as the response."
+                    ]
+                }
+            ]
+        },
+        {
+            "command": "party mode",
+            "response": "party party party"
+        }
+    ]
+}
