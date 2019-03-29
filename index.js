@@ -12,6 +12,25 @@ app.get("/read", function (req, res) {
     res.sendfile('save.json')
 });
 
+app.post("/youtube", function (req, res) {
+    let body = '';
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
+    req.on('end', () => {
+        const YouTube = require('simple-youtube-api');
+        const youtube = new YouTube('AIzaSyAM46V4IFpVnwRs3MC-_DsZIGvI2pwEK3Q');
+        youtube.searchVideos(body, 1)
+            .then(results => {
+                res.end(results[0].id)
+            })
+            .catch(err => {
+                res.end('error')
+                console.log(err)
+            });
+    });
+})
+
 app.post("/write", function (req, res) {
     let body = '';
     req.on('data', chunk => {

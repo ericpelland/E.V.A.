@@ -83,12 +83,48 @@
         },
         {
             "inputs": [
-                "can you *",
-                "show me *"
+                "can you show me a gif of *",
+                "show me gif of *"
             ],
             "funcName": "tempGiphy",
             "responseArray": [
-                "Sure, watch"
+                "Sure, watch",
+                "Okay, here you go"
+            ]
+        },
+        {
+            "inputs": [
+                "can you show me a video of *",
+                "show me a video of *",
+                "search for a video of *",
+                "find me a video of *",
+                "find a video of *",
+                "play a video of *"
+            ],
+            "funcName": "youtube",
+            "responseArray": [
+                "Sure, watch",
+                "Okay, here you go"
+            ]
+        },
+        {
+            "inputs": [
+                "can you close youtube",
+                "close youtube",
+                "close video",
+                "can you close the video",
+                "close the video",
+                "can you exit youtube",
+                "exit youtube",
+                "exit video",
+                "can you exit the video",
+                "exit the video"
+            ],
+            "funcName": "closeYoutube",
+            "responseArray": [
+                "Sure",
+                "Okay",
+                "Closing Youtube"
             ]
         }
     ]

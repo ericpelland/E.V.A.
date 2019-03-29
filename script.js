@@ -26,6 +26,14 @@ function tempGiphy(search) {
   }, 15000)
 }
 
+function youtube(search) {
+  youtube(search)
+}
+
+function closeYoutube() {
+  giphy("face", faceId)
+}
+
 function changeFace() {
   if (faceId < 20) {
     faceId++;
@@ -71,6 +79,15 @@ function writeData() {
 function chatbot(text) {
   $.post('/chatbot', text, (data) => {
     readOutLoud(data)
+  })
+}
+
+function youtube(text, restartRecognition = true) {
+  $.post('/youtube', text, (data) => {
+    $('#mediaContainer').html("<iframe allowfullscreen height='200' height='400' src='https://www.youtube.com/embed/" + data + "?autoplay=1&mute=1'/>")
+    if (restartRecognition) {
+      recognition.start()
+    }
   })
 }
 
