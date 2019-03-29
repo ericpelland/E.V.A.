@@ -99,7 +99,14 @@
                 "search for a video of *",
                 "find me a video of *",
                 "find a video of *",
-                "play a video of *"
+                "play a video of *",
+                "search youtube for a video of *",
+                "can you show me a youtube video of *",
+                "show me a youtube video of *",
+                "search for a youtube video of *",
+                "find me a youtube video of *",
+                "find a youtube video of *",
+                "play a youtube video of *"
             ],
             "funcName": "youtube",
             "responseArray": [
