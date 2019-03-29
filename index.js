@@ -18,7 +18,7 @@ app.post("/youtube", function (req, res) {
         body += chunk.toString();
     });
     req.on('end', () => {
-        const YouTube = require('simple-youtube-api'); process.env.YOUTUBE_API_KEY
+        const YouTube = require('simple-youtube-api');
         const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
         youtube.searchVideos(body, 1)
             .then(results => {
