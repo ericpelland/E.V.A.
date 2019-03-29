@@ -30,6 +30,10 @@ function youtube(search) {
   youtube(search)
 }
 
+function dictionarySearch(search) {
+  define(search)
+}
+
 function closeYoutube() {
   giphy("face", faceId)
 }
@@ -78,6 +82,12 @@ function writeData() {
 
 function chatbot(text) {
   $.post('/chatbot', text, (data) => {
+    readOutLoud(data)
+  })
+}
+
+function define(text) {
+  $.post('/dictionary', text, (data) => {
     readOutLoud(data)
   })
 }
@@ -194,10 +204,6 @@ recognition.onresult = (event) => {
               }
               if (transcript.toLowerCase().indexOf(triggers[i] + " " + cmd) == 0) {
                 param = transcript.toLowerCase().substring((triggers[i] + " " + cmd).length).trim()
-                console.log('-------------')
-                console.log(cmd)
-                console.log(param)
-                console.log('-------------')
                 commandFound = true
                 if (commands[j].steps && commands[j].steps.length > 0) {
                   awaitingResponseFromCommandId = j
@@ -207,7 +213,9 @@ recognition.onresult = (event) => {
                 if (commands[j].funcName) {
                   eval(commands[j].funcName)(param)
                 }
-                readOutLoud(commands[j].responseArray[Math.floor(Math.random() * Math.floor(commands[j].responseArray.length))])
+                if (commands[j].responseArray) {
+                  readOutLoud(commands[j].responseArray[Math.floor(Math.random() * Math.floor(commands[j].responseArray.length))])
+                }
                 return
               }
             }

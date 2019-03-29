@@ -133,6 +133,14 @@
                 "Okay",
                 "Closing Youtube"
             ]
+        },
+        {
+            "inputs": [
+                "can you define *",
+                "define *",
+                "whats the definition of *"
+            ],
+            "funcName": "dictionarySearch"
         }
     ]
 }

@@ -20,6 +20,8 @@
 * Watch any video on youtube just by asking
 * E.V.A. can search and embed the youtube video right into her (inter)face.
 * She can also close the video upon request.
+### Dictionary
+* Get the definition of any word
 ### Conversation and Command Responses:
 * E.V.A. has pre-programmed(but can still be dynamic) responses, as does the chatbot integration.
 * The path from your input to the chatbots response is AI assisted with dialogFlow natural language processing technologies
@@ -44,5 +46,6 @@
 * npm install
 * set environment variable to dialogFlow credentials json file
 * Update Youtube api key
+* Update oxford dictionary api key
 * import EVA.zip to dialogFlow agent, and adjust the project-id as needed.
 * node index.js

@@ -2,6 +2,8 @@ var express = require("express");
 var fs = require('fs');
 var app = express();
 var giphy = require('giphy-api')();
+var Dictionary = require("oxford-dictionary-api");
+var dict = new Dictionary(process.env.DICTIONARY_APP_ID, process.env.DICTIONARY_API_KEY);
 
 /* serves main page */
 app.get("/", function (req, res) {
@@ -11,6 +13,20 @@ app.get("/", function (req, res) {
 app.get("/read", function (req, res) {
     res.sendfile('save.json')
 });
+
+app.post("/dictionary", function (req, res) {
+    let body = '';
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
+    req.on('end', () => {
+        const YouTube = require('simple-youtube-api');
+        const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
+        dict.find(body, function (error, data) {
+            res.send(data.results[0].lexicalEntries[0].entries[0].senses[0].definitions[0])
+        })
+    });
+})
 
 app.post("/youtube", function (req, res) {
     let body = '';
