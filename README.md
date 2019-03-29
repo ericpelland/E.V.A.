@@ -38,6 +38,7 @@
 * 'hi eva change your face'
 * 'eva show me a video of a monkey'
 * 'eva exit youtube'
+* 'eva define easter'
 
 
 ## Install

@@ -9,11 +9,10 @@ var tempCommand
 var tempResponse
 var triggers = []
 var commands = []
-var faceId = 3;
+var faceId = 0;
 chatBotEnabled = false
 nospeecherror = false
 readData()
-giphy("face", faceId, false)
 
 /*-----------------------------
      Command Functions
@@ -222,7 +221,7 @@ recognition.onresult = (event) => {
           }
           if (!commandFound) {
             if (transcript.toLowerCase() == triggers[i]) {
-
+              readOutLoud("Hello")
             } else if (chatBotEnabled) {
               chatbot(transcript.toLowerCase().substring(triggers[i].length).trim())
             } else {

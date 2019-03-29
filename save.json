@@ -84,7 +84,7 @@
         {
             "inputs": [
                 "can you show me a gif of *",
-                "show me gif of *"
+                "show me a gif of *"
             ],
             "funcName": "tempGiphy",
             "responseArray": [
