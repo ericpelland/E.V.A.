@@ -98,9 +98,9 @@
         },
         {
             "inputs": [
-                "can you show me a gif of *",
-                "show me a gif of *",
-                "show me an animated gif of *"
+                "can you show me a gif of",
+                "show me a gif of",
+                "show me an animated gif of"
             ],
             "funcName": "tempGiphy",
             "responseArray": [
@@ -110,24 +110,24 @@
         },
         {
             "inputs": [
-                "let me watch a video of *",
-                "can you show me a video of *",
-                "show me a video of *",
-                "search for a video of *",
-                "find me a video of *",
-                "find a video of *",
-                "play a video of *",
-                "search youtube for a video of *",
-                "can you show me a youtube video of *",
-                "show me a youtube video of *",
-                "search for a youtube video of *",
-                "find me a youtube video of *",
-                "find a youtube video of *",
-                "play a youtube video of *",
-                "can you play *",
-                "play a video of *",
-                "please play *",
-                "play *"
+                "let me watch a video of",
+                "can you show me a video of",
+                "show me a video of",
+                "search for a video of",
+                "find me a video of",
+                "find a video of",
+                "play a video of",
+                "search youtube for a video of",
+                "can you show me a youtube video of",
+                "show me a youtube video of",
+                "search for a youtube video of",
+                "find me a youtube video of",
+                "find a youtube video of",
+                "play a youtube video of",
+                "can you play",
+                "play a video of",
+                "please play",
+                "play"
             ],
             "funcName": "youtube",
             "responseArray": [
@@ -157,11 +157,11 @@
         },
         {
             "inputs": [
-                "can you define *",
-                "define *",
-                "whats the definition of *",
-                "what is a *",
-                "can you explain what a *"
+                "can you define",
+                "define",
+                "whats the definition of",
+                "what is a",
+                "can you explain what a"
             ],
             "funcName": "dictionarySearch"
         },
