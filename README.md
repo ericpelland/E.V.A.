@@ -29,7 +29,7 @@
 * 'eva are you listening'
 * 'eva can you hear me'
 * 'hi eva add trigger'
-* 'hello eva add simple command'
+* 'hello eva add command'
 * 'hey eva show me a telescope'
 * 'eva can you dance'
 * 'hi eva change your face'

@@ -1,30 +1,30 @@
-var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-var recognition = new SpeechRecognition();
-var conversationTextarea = $('#conversation-textarea');
-var conversation = '';
-var awaitingResponse = false;
-var awaitingResponseFromCommandId;
-var awaitingResponseFromcommandstep = 0;
+var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+var recognition = new SpeechRecognition()
+var conversationTextarea = $('#conversation-textarea')
+var conversation = ''
+var awaitingResponse = false
+var awaitingResponseFromCommandId
+var awaitingResponseFromcommandstep = 0
 var tempCommand
 var tempResponse
 window.triggers = []
 window.commands = []
-var faceId = 0;
-nospeecherror = false
+var faceId = 0
+var nospeecherror = false
 readData()
-/*-----------------------------
+/* -----------------------------
      Command Functions
-------------------------------*/
+------------------------------ */
 
 function tempGiphy(search) {
   giphy(search, 0, false)
   setTimeout(() => {
-    giphy("face", faceId, false)
+    giphy('face', faceId, false)
   }, 15000)
 }
 
 function youtube(search) {
-  youtube(search)
+  youtubeSearch(search)
 }
 
 function dictionarySearch(search) {
@@ -32,16 +32,16 @@ function dictionarySearch(search) {
 }
 
 function closeYoutube() {
-  giphy("face", faceId)
+  giphy('face', faceId)
 }
 
 function changeFace() {
   if (faceId < 20) {
-    faceId++;
+    faceId++
   } else {
-    faceId = 0;
+    faceId = 0
   }
-  giphy("face", faceId)
+  giphy('face', faceId)
 }
 
 function addTrigger(trigger) {
@@ -65,9 +65,9 @@ function addCommandResponse(response) {
   readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [response]))
 }
 
-/*-----------------------------
+/* -----------------------------
           Helpers
-------------------------------*/
+------------------------------ */
 
 function writeData() {
   $.post('/write', JSON.stringify({ triggers: window.triggers, commands: window.commands }), () => { })
@@ -79,7 +79,7 @@ function define(text) {
   })
 }
 
-function youtube(text, restartRecognition = true) {
+function youtubeSearch(text, restartRecognition = true) {
   $.post('/youtube', text, (data) => {
     $('#mediaContainer').html("<iframe allowfullscreen height='200' height='400' src='https://www.youtube.com/embed/" + data + "?autoplay=1&mute=1'/>")
     if (restartRecognition) {
@@ -98,11 +98,11 @@ function giphy(text, index = 0, restartRecognition = true) {
 }
 
 function getResponseFromArrays(arr1, arr2) {
-  var result = ""
+  var result = ''
   for (var i = 0; i < arr2.length; i++) {
-    result += " " + arr1[i] + " " + arr2[i]
+    result += ' ' + arr1[i] + ' ' + arr2[i]
   }
-  result += " " + arr1[arr1.length - 1]
+  result += ' ' + arr1[arr1.length - 1]
   return result.trim()
 }
 
@@ -113,23 +113,23 @@ function readData() {
   })
 }
 
-/*-----------------------------
+/* -----------------------------
              UI
-------------------------------*/
+------------------------------ */
 
 function addtoConversation(message, response = false) {
   if (response) {
     conversation += "<li style='color:blue'>"
   } else {
-    conversation += "<li>"
+    conversation += '<li>'
   }
-  conversation += message + "</li>";
-  conversationTextarea.html(conversation);
+  conversation += message + '</li>'
+  conversationTextarea.html(conversation)
   conversationTextarea.find('li').last()[0].scrollIntoView()
 }
 
 $('#startBtn').on('click', () => {
-  if ($('#startBtn').html() == 'Start') {
+  if ($('#startBtn').html() === 'Start') {
     recognition.start()
     $('#startBtn').html('Stop')
   } else {
@@ -141,36 +141,36 @@ $('#startBtn').on('click', () => {
 })
 
 $('#userInput').keypress(function (e) {
-  if (e.charCode == 13) {
+  if (e.charCode === 13) {
     var event = { resultIndex: 0, results: [[{ transcript: $('#userInput').val() }]] }
     recognition.onresult(event)
-    return false;
+    return false
   }
-});
+})
 
-/*-----------------------------
-      Voice Recognition 
-------------------------------*/
+/* -----------------------------
+      Voice Recognition
+------------------------------ */
 
-recognition.continuous = true;
+recognition.continuous = true
 
 recognition.onresult = (event) => {
   recognition.onend = () => {
     if (nospeecherror) {
-      nospeecherror = false;
+      nospeecherror = false
       recognition.start()
-      return;
+      return
     }
     $('#userInput').val('')
-    var current = event.resultIndex;
-    var transcript = event.results[current][0].transcript;
-    var mobileRepeatBug = (current == 1 && transcript == event.results[0][0].transcript);
+    var current = event.resultIndex
+    var transcript = event.results[current][0].transcript
+    var mobileRepeatBug = (current === 1 && transcript === event.results[0][0].transcript)
     if (!mobileRepeatBug) {
       console.log(transcript.toLowerCase())
       if (awaitingResponse) {
         addtoConversation(transcript)
-        eval(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].funcName)(transcript.toLowerCase());
-        if (awaitingResponseFromcommandstep == window.commands[awaitingResponseFromCommandId].steps.length - 1) {
+        eval(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].funcName)(transcript.toLowerCase())
+        if (awaitingResponseFromcommandstep === window.commands[awaitingResponseFromCommandId].steps.length - 1) {
           awaitingResponseFromcommandstep = 0
           awaitingResponse = false
           awaitingResponseFromCommandId = null
@@ -179,14 +179,14 @@ recognition.onresult = (event) => {
         return
       }
       for (var i = 0; i < window.triggers.length; i++) {
-        if (transcript.toLowerCase().indexOf(window.triggers[i]) == 0) {
-          addtoConversation(transcript);
+        if (transcript.toLowerCase().indexOf(window.triggers[i]) === 0) {
+          addtoConversation(transcript)
           window.commandWithParam = transcript.toLowerCase().substring(window.triggers[i].length).trim()
           $.post('/response', transcript.toLowerCase().substring(window.triggers[i].length).trim(), (data) => {
             let param = window.commandWithParam.substring(data.length).trim()
             for (var j = 0; j < window.commands.length; j++) {
               for (var k = 0; k < window.commands[j].inputs.length; k++) {
-                if (window.commands[j].inputs[k] == data) {
+                if (window.commands[j].inputs[k] === data) {
                   if (window.commands[j].steps && window.commands[j].steps.length > 0) {
                     awaitingResponseFromCommandId = j
                     awaitingResponseFromcommandstep = 0
@@ -209,10 +209,10 @@ recognition.onresult = (event) => {
     recognition.start()
   }
   recognition.abort()
-};
+}
 
 recognition.onerror = function (event) {
-  if (event.error == 'no-speech') {
+  if (event.error === 'no-speech') {
     nospeecherror = true
   }
   if (event.error !== 'aborted') {
@@ -220,39 +220,39 @@ recognition.onerror = function (event) {
   }
 }
 
-/*-----------------------------
-      Speech Synthesis 
-------------------------------*/
+/* -----------------------------
+      Speech Synthesis
+------------------------------ */
 function readOutLoud(message) {
   addtoConversation(message, true)
-  var speech = new SpeechSynthesisUtterance();
-  speech.voice = getVoiceFromName("Google US English")
-  speech.text = message;
-  speech.volume = 1;
-  speech.rate = 1;
-  speech.pitch = 1;
-  window.speechSynthesis.speak(speech);
+  var speech = new SpeechSynthesisUtterance()
+  speech.voice = getVoiceFromName('Google US English')
+  speech.text = message
+  speech.volume = 1
+  speech.rate = 1
+  speech.pitch = 1
+  window.speechSynthesis.speak(speech)
   function _wait() {
     if (!window.speechSynthesis.speaking) {
       recognition.start()
-      return;
+      return
     }
-    window.setTimeout(_wait, 200);
+    window.setTimeout(_wait, 200)
   }
-  _wait();
+  _wait()
 }
 
-var voices;
-speechSynthesis.onvoiceschanged = function () {
-  voices = speechSynthesis.getVoices();
-};
+var voices
+window.speechSynthesis.onvoiceschanged = function () {
+  voices = window.speechSynthesis.getVoices()
+}
 
 function getVoiceFromName(name) {
-  var foundVoice = null;
+  var foundVoice = null
   voices.forEach(function (voice, index) {
     if (voice.name === name) {
-      foundVoice = voice;
+      foundVoice = voice
     }
-  });
-  return foundVoice;
+  })
+  return foundVoice
 }

@@ -14,15 +14,24 @@
             ],
             "responseArray": [
                 "Yes, I am always listening",
-                "Yes, I can hear you"
+                "Yes, I can hear you",
+                "My ears are wide open"
             ]
         },
         {
             "inputs": [
-                "add trigger"
+                "add trigger",
+                "add new trigger",
+                "add a new trigger",
+                "can you add a new trigger",
+                "add a trigger",
+                "could you add a trigger",
+                "i would like to add a trigger",
+                "i would like you to add a trigger"
             ],
             "responseArray": [
-                "Sure, what should the trigger be"
+                "Sure, what should the trigger be",
+                "Ok, what's the trigger"
             ],
             "steps": [
                 {
@@ -36,10 +45,13 @@
         },
         {
             "inputs": [
-                "add simple command"
+                "add command",
+                "can you add a command",
+                "i would like to add a command"
             ],
             "responseArray": [
-                "Sure, what should the command be"
+                "Sure, what should the command be",
+                "Ok, what the command"
             ],
             "steps": [
                 {
@@ -75,7 +87,8 @@
         {
             "inputs": [
                 "can you show me a gif of *",
-                "show me a gif of *"
+                "show me a gif of *",
+                "show me an animated gif of *"
             ],
             "funcName": "tempGiphy",
             "responseArray": [
