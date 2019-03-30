@@ -86,6 +86,18 @@
         },
         {
             "inputs": [
+                "reset your face",
+                "use your origional face"
+            ],
+            "funcName": "resetFace",
+            "responseArray": [
+                "I changed my face for you",
+                "I hope that works better for you",
+                "Face changed"
+            ]
+        },
+        {
+            "inputs": [
                 "can you show me a gif of *",
                 "show me a gif of *",
                 "show me an animated gif of *"
@@ -98,6 +110,7 @@
         },
         {
             "inputs": [
+                "let me watch a video of *",
                 "can you show me a video of *",
                 "show me a video of *",
                 "search for a video of *",
@@ -110,7 +123,11 @@
                 "search for a youtube video of *",
                 "find me a youtube video of *",
                 "find a youtube video of *",
-                "play a youtube video of *"
+                "play a youtube video of *",
+                "can you play *",
+                "play a video of *",
+                "please play *",
+                "play *"
             ],
             "funcName": "youtube",
             "responseArray": [
@@ -142,7 +159,9 @@
             "inputs": [
                 "can you define *",
                 "define *",
-                "whats the definition of *"
+                "whats the definition of *",
+                "what is a *",
+                "can you explain what a *"
             ],
             "funcName": "dictionarySearch"
         },
@@ -279,26 +298,7 @@
                 "I do appreciate your sense of humor"
             ],
             "responseArray": [
-                "I",
-                " ",
-                "t",
-                "h",
-                "i",
-                "n",
-                "k",
-                "'",
-                "m",
-                "p",
-                "r",
-                "e",
-                "y",
-                "f",
-                "u",
-                "!",
-                "W",
-                "a",
-                "o",
-                "?"
+                "I think I\u0027m pretty funny! Want to hear another?"
             ]
         },
         {
@@ -356,35 +356,7 @@
                 "I was going to donate blood until the lady got all personal and started asking \"Who's blood is this?\" and \"How did you get it?\"",
                 "If swimming is so good for your figure, how do you explain whales?",
                 "I don't have a big ego. I'm way too cool for that.",
-                "Why couldn't the bicycle stand? Because it was two tired."
-            ]
-        },
-        {
-            "inputs": [
-                "ready for more",
-                "sure",
-                "more",
-                "another one",
-                "I'm ready for more",
-                "next",
-                "why not",
-                "more jokes",
-                "more fun",
-                "yes sure",
-                "what else",
-                "tell me more",
-                "yes",
-                "tell me another",
-                "go for it",
-                "okay",
-                "do you have more",
-                "ok",
-                "are there more",
-                "another joke",
-                "anything else",
-                "ready"
-            ],
-            "responseArray": [
+                "Why couldn't the bicycle stand? Because it was two tired.",
                 "Originality is the art of concealing your sources.",
                 "Despite the cost of living, have you noticed how popular it remains?",
                 "My GPS keeps saying, \"Go back 20 years and enter law school.\"",

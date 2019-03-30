@@ -16,11 +16,12 @@ readData()
      Command Functions
 ------------------------------ */
 
+function resetFace() {
+  $('#mediaContainer').html("<img style='max-height:200px;' src='./face.gif' />")
+}
+
 function tempGiphy(search) {
   giphy(search, 0, false)
-  setTimeout(() => {
-    giphy('face', faceId, false)
-  }, 15000)
 }
 
 function youtube(search) {
@@ -32,7 +33,8 @@ function dictionarySearch(search) {
 }
 
 function closeYoutube() {
-  giphy('face', faceId)
+  resetFace()
+  recognition.start()
 }
 
 function changeFace() {
