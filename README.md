@@ -30,19 +30,24 @@
 * 'eva can you hear me'
 * 'hi eva add trigger'
 * 'hello eva add simple command'
-* 'eva toggle chatbot'
 * 'hey eva show me a telescope'
 * 'eva can you dance'
 * 'hi eva change your face'
 * 'eva show me a video of a monkey'
 * 'eva exit youtube'
 * 'eva define easter'
+* 'eva what are you up to'
+* 'eva tell me a joke'
+* 'eva what does the fox say'
+* 'eva how are you today'
 
 
 ## Install
 * git clone https://github.com/ericpelland/E.V.A./
 * cd E.V.A./
 * npm install
-* Update Youtube api key
-* Update oxford dictionary api key
+* update youtube(google), and dictionary(oxford) API keys
+* export YOUTUBE_API_KEY="API KEY HERE"
+* export DICTIONARY_APP_ID="API KEY HERE"
+* export DICTIONARY_API_KEY="API KEY HERE"
 * node index.js
