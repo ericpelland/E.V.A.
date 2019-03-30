@@ -139,7 +139,7 @@ app.listen(port, function () {
   console.log('Listening on ' + port)
 })
 
-function getInputs () {
+function getInputs() {
   var response = []
   var obj = JSON.parse(fs.readFileSync('save.json', 'utf8'))
   for (var i = 0; i < obj.commands.length; i++) {

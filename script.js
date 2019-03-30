@@ -183,7 +183,15 @@ recognition.onresult = (event) => {
           addtoConversation(transcript)
           window.commandWithParam = transcript.toLowerCase().substring(window.triggers[i].length).trim()
           $.post('/response', transcript.toLowerCase().substring(window.triggers[i].length).trim(), (data) => {
-            let param = window.commandWithParam.substring(data.length).trim()
+            var words = window.commandWithParam.split(" ")
+            var dataWords = data.split(" ")
+            var greatestIndex = 0
+            for (var j = 0; j < dataWords.length; j++) {
+              if (words.indexOf(dataWords[j]) > greatestIndex)
+                greatestIndex = dataWords.indexOf(words[j])
+            }
+            words.splice(0, greatestIndex + 1)
+            var param = words.join(" ")
             for (var j = 0; j < window.commands.length; j++) {
               for (var k = 0; k < window.commands[j].inputs.length; k++) {
                 if (window.commands[j].inputs[k] === data) {
