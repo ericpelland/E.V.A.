@@ -4,6 +4,8 @@ var app = express();
 var giphy = require('giphy-api')();
 var Dictionary = require("oxford-dictionary-api");
 var dict = new Dictionary(process.env.DICTIONARY_APP_ID, process.env.DICTIONARY_API_KEY);
+var stringSimilarity = require('string-similarity');
+var FuzzySet = require('fuzzyset.js');
 
 /* serves main page */
 app.get("/", function (req, res) {
@@ -13,6 +15,47 @@ app.get("/", function (req, res) {
 app.get("/read", function (req, res) {
     res.sendfile('save.json')
 });
+
+app.post("/response", function (req, res) {
+    let inputArray = getInputs();
+    let body = '';
+    req.on('data', chunk => {
+        body += chunk.toString();
+    });
+    req.on('end', () => {
+        a = FuzzySet(getInputs());
+        var matches = stringSimilarity.findBestMatch(body, inputArray);
+        matches.ratings = matches.ratings.sort((a, b) => {
+            if (a.rating > b.rating) return -1
+            return 1
+        })
+        let fuzzyResults = a.get(body).sort((a, b) => {
+            if (a[0] > b[0]) return -1
+            return 1
+        })
+        for (var j = 0; j < fuzzyResults.length && j < 10; j++) {
+            var matchFound = false
+            for (var i = 0; i < matches.ratings.length && i < 10; i++) {
+                if (matches.ratings[i].target == fuzzyResults[j][1]) {
+                    matches.ratings[i].rating = (matches.ratings[j].rating + fuzzyResults[j][0]) / 2
+                    matchFound = true
+                }
+            }
+            if (!matchFound) {
+                matches.ratings.push({ target: fuzzyResults[j][1], rating: fuzzyResults[j][0] })
+            }
+        }
+        var highestValue = 0
+        var highestValueEntity
+        for (var i = 0; i < matches.ratings.length; i++) {
+            if (matches.ratings[i].rating > highestValue) {
+                highestValue = matches.ratings[i].rating
+                highestValueEntity = matches.ratings[i].target
+            }
+        }
+        res.end(highestValueEntity)
+    });
+})
 
 app.post("/dictionary", function (req, res) {
     let body = '';
@@ -106,44 +149,13 @@ app.listen(port, function () {
     console.log("Listening on " + port);
 });
 
-const dialogflow = require('dialogflow');
-const uuid = require('uuid');
-
-/**
- * Send a query to the dialogflow agent, and return the query result.
- * @param {string} projectId The project to be used
- */
-async function chatbot(text) {
-    var projectId = 'eva-xfhffo'
-    // A unique identifier for the given session
-    const sessionId = uuid.v4();
-
-    this.sessionClient = new dialogflow.SessionsClient()
-    const sessionPath = sessionClient.sessionPath(projectId, sessionId);
-
-    // The text query request.
-    const request = {
-        session: sessionPath,
-        queryInput: {
-            text: {
-                // The query to send to the dialogflow agent
-                text: text,
-                // The language used by the client (en-US)
-                languageCode: 'en',
-            },
-        },
-    };
-
-    // Send request and log result
-    const responses = await sessionClient.detectIntent(request);
-    console.log('Detected intent');
-    const result = responses[0].queryResult;
-    console.log(`  Query: ${result.queryText}`);
-    console.log(`  Response: ${result.fulfillmentText}`);
-    if (result.intent) {
-        console.log(`  Intent: ${result.intent.displayName}`);
-    } else {
-        console.log(`  No intent matched.`);
+function getInputs() {
+    var response = [];
+    var obj = JSON.parse(fs.readFileSync('save.json', 'utf8'));
+    for (var i = 0; i < obj.commands.length; i++) {
+        for (var j = 0; j < obj.commands[i].inputs.length; j++) {
+            response.push(obj.commands[i].inputs[j])
+        }
     }
-    return result.fulfillmentText
+    return response;
 }

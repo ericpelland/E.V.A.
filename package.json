@@ -9,12 +9,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dialogflow": "^0.8.2",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
+    "fuzzyset.js": "0.0.8",
     "giphy-api": "^2.0.1",
+    "i": "^0.3.6",
+    "install": "^0.12.2",
+    "npm": "^6.9.0",
     "oxford-dictionary-api": "^1.0.1",
     "simple-youtube-api": "^5.1.1",
-    "uuid": "^3.3.2"
+    "string-similarity": "^3.0.0"
   }
 }

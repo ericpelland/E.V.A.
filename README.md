@@ -9,9 +9,7 @@
 * E.V.A. can learn new trigger phrases, commands and responses all without touching the code. 
 * Just tell her you want to add a command or trigger
 ### Chatbot
-* E.V.A. can utilize a dialogFlow agent setup to be a bit of a chatbot.  Some Easter eggs and jokes added in as well.
-* E.V.A. listens for 'eva' commands first, and then if chatbot is on, refers to dialogFlow.
-* When the chatbot is enabled, the 'eva' trigger is only needed to trigger eva commands.
+* E.V.A. can utilize the Dice coefficient statistic and the Levenshtein distance metric to be a bit of a chatbot.  Some Easter eggs and jokes added in as well.
 ### Giphy
 * E.V.A. has a giphy integration and displays a personable giphy face
 * E.V.A. can respond by showing gif's
@@ -23,8 +21,8 @@
 ### Dictionary
 * Get the definition of any word
 ### Conversation and Command Responses:
-* E.V.A. has pre-programmed(but can still be dynamic) responses, as does the chatbot integration.
-* The path from your input to the chatbots response is AI assisted with dialogFlow natural language processing technologies
+* E.V.A. has pre-programmed(but can still be dynamic) responses.
+* The path from your input to the chatbots response is AI assisted with natural language processing technologies
 * Responses can be single responses to a phrase, or a random selection of many available responses. 
 * Procedural tasks can take in a series of responses and functions to complete one after another
 ### Commands:
@@ -45,8 +43,6 @@
 * git clone https://github.com/ericpelland/E.V.A./
 * cd E.V.A./
 * npm install
-* set environment variable to dialogFlow credentials json file
 * Update Youtube api key
 * Update oxford dictionary api key
-* import EVA.zip to dialogFlow agent, and adjust the project-id as needed.
 * node index.js

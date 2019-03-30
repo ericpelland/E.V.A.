@@ -4,16 +4,14 @@ var conversationTextarea = $('#conversation-textarea');
 var conversation = '';
 var awaitingResponse = false;
 var awaitingResponseFromCommandId;
-var awaitingResponseFromCommandStep = 0;
+var awaitingResponseFromcommandstep = 0;
 var tempCommand
 var tempResponse
-var triggers = []
-var commands = []
+window.triggers = []
+window.commands = []
 var faceId = 0;
-chatBotEnabled = false
 nospeecherror = false
 readData()
-
 /*-----------------------------
      Command Functions
 ------------------------------*/
@@ -46,29 +44,25 @@ function changeFace() {
   giphy("face", faceId)
 }
 
-function toggleChatBot() {
-  chatBotEnabled = !chatBotEnabled
-}
-
 function addTrigger(trigger) {
-  triggers.push(trigger)
+  window.triggers.push(trigger)
   writeData()
-  readOutLoud(getResponseFromArrays(commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommandStep].responseArray, [trigger]))
+  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [trigger]))
 }
 
 function addCommand(command) {
   tempCommand = command
-  readOutLoud(getResponseFromArrays(commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommandStep].responseArray, [command]))
+  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [command]))
 }
 
 function addCommandResponse(response) {
   tempResponse = response
-  commands.push({
+  window.commands.push({
     command: tempCommand,
     response: tempResponse
   })
   writeData()
-  readOutLoud(getResponseFromArrays(commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommandStep].responseArray, [response]))
+  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [response]))
 }
 
 /*-----------------------------
@@ -76,13 +70,7 @@ function addCommandResponse(response) {
 ------------------------------*/
 
 function writeData() {
-  $.post('/write', JSON.stringify({ triggers: triggers, commands: commands }), () => { })
-}
-
-function chatbot(text) {
-  $.post('/chatbot', text, (data) => {
-    readOutLoud(data)
-  })
+  $.post('/write', JSON.stringify({ triggers: window.triggers, commands: window.commands }), () => { })
 }
 
 function define(text) {
@@ -120,8 +108,8 @@ function getResponseFromArrays(arr1, arr2) {
 
 function readData() {
   $.get('/read', (data) => {
-    triggers = data.triggers
-    commands = data.commands
+    window.triggers = data.triggers
+    window.commands = data.commands
   })
 }
 
@@ -181,60 +169,41 @@ recognition.onresult = (event) => {
       console.log(transcript.toLowerCase())
       if (awaitingResponse) {
         addtoConversation(transcript)
-        eval(commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommandStep].funcName)(transcript.toLowerCase());
-        if (awaitingResponseFromCommandStep == commands[awaitingResponseFromCommandId].steps.length - 1) {
-          awaitingResponseFromCommandStep = 0
+        eval(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].funcName)(transcript.toLowerCase());
+        if (awaitingResponseFromcommandstep == window.commands[awaitingResponseFromCommandId].steps.length - 1) {
+          awaitingResponseFromcommandstep = 0
           awaitingResponse = false
           awaitingResponseFromCommandId = null
         }
-        awaitingResponseFromCommandStep += 1
+        awaitingResponseFromcommandstep += 1
         return
       }
-      for (var i = 0; i < triggers.length; i++) {
-        if (transcript.toLowerCase().indexOf(triggers[i]) == 0) {
+      for (var i = 0; i < window.triggers.length; i++) {
+        if (transcript.toLowerCase().indexOf(window.triggers[i]) == 0) {
           addtoConversation(transcript);
-          var commandFound = false
-          for (var j = 0; j < commands.length; j++) {
-            for (var k = 0; k < commands[j].inputs.length; k++) {
-              let cmd = commands[j].inputs[k]
-              let param;
-              if (cmd.indexOf('*') == (cmd.length - 1)) {
-                cmd = cmd.substring(0, cmd.length - 2)
-              }
-              if (transcript.toLowerCase().indexOf(triggers[i] + " " + cmd) == 0) {
-                param = transcript.toLowerCase().substring((triggers[i] + " " + cmd).length).trim()
-                commandFound = true
-                if (commands[j].steps && commands[j].steps.length > 0) {
-                  awaitingResponseFromCommandId = j
-                  awaitingResponseFromCommandStep = 0
-                  awaitingResponse = true
+          window.commandWithParam = transcript.toLowerCase().substring(window.triggers[i].length).trim()
+          $.post('/response', transcript.toLowerCase().substring(window.triggers[i].length).trim(), (data) => {
+            let param = window.commandWithParam.substring(data.length).trim()
+            for (var j = 0; j < window.commands.length; j++) {
+              for (var k = 0; k < window.commands[j].inputs.length; k++) {
+                if (window.commands[j].inputs[k] == data) {
+                  if (window.commands[j].steps && window.commands[j].steps.length > 0) {
+                    awaitingResponseFromCommandId = j
+                    awaitingResponseFromcommandstep = 0
+                    awaitingResponse = true
+                  }
+                  if (window.commands[j].funcName) {
+                    eval(window.commands[j].funcName)(param)
+                  }
+                  if (window.commands[j].responseArray) {
+                    readOutLoud(window.commands[j].responseArray[Math.floor(Math.random() * Math.floor(window.commands[j].responseArray.length))])
+                  }
+                  return
                 }
-                if (commands[j].funcName) {
-                  eval(commands[j].funcName)(param)
-                }
-                if (commands[j].responseArray) {
-                  readOutLoud(commands[j].responseArray[Math.floor(Math.random() * Math.floor(commands[j].responseArray.length))])
-                }
-                return
               }
             }
-          }
-          if (!commandFound) {
-            if (transcript.toLowerCase() == triggers[i]) {
-              readOutLoud("Hello")
-            } else if (chatBotEnabled) {
-              chatbot(transcript.toLowerCase().substring(triggers[i].length).trim())
-            } else {
-              readOutLoud("I am sorry, I do not recognize that command.")
-            }
-            return
-          }
+          })
         }
-      }
-      if (chatBotEnabled) {
-        addtoConversation(transcript);
-        chatbot(transcript)
-        return
       }
     }
     recognition.start()
