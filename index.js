@@ -7,6 +7,7 @@ var Dictionary = require('oxford-dictionary-api')
 var dict = new Dictionary(process.env.DICTIONARY_APP_ID, process.env.DICTIONARY_API_KEY)
 var stringSimilarity = require('string-similarity')
 var FuzzySet = require('fuzzyset.js')
+const YouTube = require('simple-youtube-api')
 
 /* serves main page */
 app.get('/', function (req, res) {
@@ -78,7 +79,6 @@ app.post('/youtube', function (req, res) {
     body += chunk.toString()
   })
   req.on('end', () => {
-    const YouTube = require('simple-youtube-api')
     const youtube = new YouTube(process.env.YOUTUBE_API_KEY)
     youtube.searchVideos(body, 1)
       .then(results => {
