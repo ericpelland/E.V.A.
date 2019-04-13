@@ -10,6 +10,9 @@
 * Just tell her you want to add a command or trigger
 ### Chatbot
 * E.V.A. can utilize the Dice coefficient statistic and the Levenshtein distance metric to be a bit of a chatbot.  Some Easter eggs and jokes added in as well.
+### Trigger Phrases
+* Tell her to stop using trigger words, and she will start listening and responding without the need to use her name.
+* You can turn trigger words back on by telling her to.
 ### Giphy
 * E.V.A. has a giphy integration and displays a personable giphy face
 * E.V.A. can respond by showing gif's
@@ -18,6 +21,9 @@
 * Watch any video on youtube just by asking
 * E.V.A. can search and embed the youtube video right into her (inter)face.
 * She can also close the video upon request.
+### Webcam Control (For future computer vision)
+* Eva can open her eyes by enabling your webcam.  Just ask.
+* If you want to turn off her webcam, as usual, just ask.
 ### Dictionary
 * Get the definition of any word
 ### Conversation and Command Responses:
@@ -25,7 +31,7 @@
 * The path from your input to the chatbots response is AI assisted with natural language processing technologies
 * Responses can be single responses to a phrase, or a random selection of many available responses. 
 * Procedural tasks can take in a series of responses and functions to complete one after another
-### Commands:
+### Command Examples:
 * 'eva are you listening'
 * 'eva can you hear me'
 * 'hi eva add trigger'
@@ -40,6 +46,9 @@
 * 'eva tell me a joke'
 * 'eva what does the fox say'
 * 'eva how are you today'
+* 'eva can you disable vision'
+* 'eva open your eyes'
+* 'eva disable trigger words'
 
 
 ## Install

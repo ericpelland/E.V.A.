@@ -14,11 +14,20 @@ var nospeecherror = false
 var video;
 var videoStream;
 var videoEnabled = false;
+var useTriggers = true;
 
 readData()
 /* -----------------------------
      Command Functions
 ------------------------------ */
+
+function enableTriggers() {
+  useTriggers = true
+}
+
+function disableTriggers() {
+  useTriggers = false
+}
 
 function resetFace() {
   $('#mediaContainer').html("<img style='max-height:200px;' src='./face.gif' />")
@@ -200,7 +209,6 @@ recognition.onresult = (event) => {
     if (!mobileRepeatBug) {
       console.log(transcript.toLowerCase())
       if (awaitingResponse) {
-        addtoConversation(transcript)
         eval(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].funcName)(transcript.toLowerCase())
         if (awaitingResponseFromcommandstep === window.commands[awaitingResponseFromCommandId].steps.length - 1) {
           awaitingResponseFromcommandstep = 0
@@ -210,46 +218,62 @@ recognition.onresult = (event) => {
         awaitingResponseFromcommandstep += 1
         return
       }
-      for (var i = 0; i < window.triggers.length; i++) {
-        if (transcript.toLowerCase().indexOf(window.triggers[i]) === 0) {
-          addtoConversation(transcript)
-          window.commandWithParam = transcript.toLowerCase().substring(window.triggers[i].length).trim()
-          if (transcript.toLowerCase().trim() === window.triggers[i]) {
-            window.commandWithParam = "hello"
-          }
-          $.post('/response', window.commandWithParam, (data) => {
-            var words = window.commandWithParam.split(" ")
-            var dataWords = data.split(" ")
-            var greatestIndex = 0
-            for (var j = 0; j < dataWords.length; j++) {
-              if (words.indexOf(dataWords[j]) > greatestIndex)
-                greatestIndex = dataWords.indexOf(words[j])
+      window.commandWithParam = ''
+      if (useTriggers) {
+        for (var i = 0; i < window.triggers.length; i++) {
+          if (transcript.toLowerCase().indexOf(window.triggers[i]) === 0) {
+            addtoConversation(transcript)
+            window.commandWithParam = transcript.toLowerCase().substring(window.triggers[i].length).trim()
+            if (transcript.toLowerCase().trim() === window.triggers[i]) {
+              window.commandWithParam = "hello"
             }
-            words.splice(0, greatestIndex + 1)
-            var param = words.join(" ")
-            for (var j = 0; j < window.commands.length; j++) {
-              for (var k = 0; k < window.commands[j].inputs.length; k++) {
-                if (window.commands[j].inputs[k] === data) {
-                  if (window.commands[j].steps && window.commands[j].steps.length > 0) {
-                    awaitingResponseFromCommandId = j
-                    awaitingResponseFromcommandstep = 0
-                    awaitingResponse = true
-                  }
-                  if (window.commands[j].funcName) {
-                    eval(window.commands[j].funcName)(param)
-                  }
-                  if (window.commands[j].responseArray) {
-                    readOutLoud(window.commands[j].responseArray[Math.floor(Math.random() * Math.floor(window.commands[j].responseArray.length))])
-                  }
-                  return
+          }
+        }
+      } else {
+        addtoConversation(transcript)
+        window.commandWithParam = transcript.toLowerCase().trim()
+      }
+      if (window.commandWithParam.length > 0) {
+        $.post('/response', window.commandWithParam, (data) => {
+          var words = window.commandWithParam.split(" ")
+          var dataWords = data.split(" ")
+          var greatestIndex = 0
+          for (var j = 0; j < dataWords.length; j++) {
+            if (words.indexOf(dataWords[j]) > greatestIndex)
+              greatestIndex = dataWords.indexOf(words[j])
+          }
+          words.splice(0, greatestIndex + 1)
+          var param = words.join(" ")
+          var reload = true
+          for (var j = 0; j < window.commands.length; j++) {
+            for (var k = 0; k < window.commands[j].inputs.length; k++) {
+              if (window.commands[j].inputs[k] === data) {
+                if (window.commands[j].steps && window.commands[j].steps.length > 0) {
+                  awaitingResponseFromCommandId = j
+                  awaitingResponseFromcommandstep = 0
+                  awaitingResponse = true
                 }
+                if (window.commands[j].funcName) {
+                  eval(window.commands[j].funcName)(param)
+                }
+                if (window.commands[j].responseArray) {
+                  readOutLoud(window.commands[j].responseArray[Math.floor(Math.random() * Math.floor(window.commands[j].responseArray.length))])
+                }
+                reload = false
+                return
               }
             }
-          })
-        }
+          }
+          if (reload) {
+            recognition.start()
+          }
+        })
+      } else {
+        recognition.start()
       }
+    } else {
+      recognition.start()
     }
-    recognition.start()
   }
   recognition.abort()
 }

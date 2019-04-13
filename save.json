@@ -164,6 +164,30 @@
         },
         {
             "inputs": [
+                "disable trigger use",
+                "stop trigger detection",
+                "stop using triggers",
+                "don't use trigger words"
+            ],
+            "funcName": "disableTriggers",
+            "responseArray": [
+                "I will now try and respond to everything I hear"
+            ]
+        },
+        {
+            "inputs": [
+                "enable trigger use",
+                "start trigger detection",
+                "start using triggers",
+                "use trigger words"
+            ],
+            "funcName": "enableTriggers",
+            "responseArray": [
+                "I will now only try and respond to triggered phrases"
+            ]
+        },
+        {
+            "inputs": [
                 "let me watch a video of",
                 "can you show me a video of",
                 "show me a video of",
