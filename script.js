@@ -27,6 +27,25 @@ function enableTriggers() {
   useTriggers = true
 }
 
+function showWebcamStream() {
+  if (!videoEnabled) {
+    startVideoInput()
+  }
+  document.getElementById('videoContainer').style.display = 'block'
+}
+
+function hideWebcamStream() {
+  document.getElementById('videoContainer').style.display = 'none'
+}
+
+function stopListening() {
+  recognition.onend = () => {
+    $('#startBtn').html('Start')
+  }
+  stopVideoInput()
+  recognition.abort()
+}
+
 function disableTriggers() {
   useTriggers = false
 }
@@ -147,7 +166,7 @@ function gotResult(err, results) {
     if (humanReadablePercent < 50) {
       readOutLoud("I am not sure, I doubt it but it might be a " + combinedArr[0].className)
     } else {
-      readOutLoud("I think I am looking at a " + combinedArr[0].className + " with a probablity of " + humanReadablePercent + "%")
+      readOutLoud("I am " + humanReadablePercent + "% sure that I am looking at a " + combinedArr[0].className)
     }
   }
 }
@@ -161,9 +180,11 @@ function startVideoInput() {
 }
 
 function stopVideoInput() {
-  video.stop();
-  videoStream.getTracks()[0].stop();
-  document.getElementById('videoContainer').innerHTML = '';
+  if (videoEnabled) {
+    video.stop();
+    videoStream.getTracks()[0].stop();
+    document.getElementById('videoContainer').innerHTML = '';
+  }
   videoEnabled = false;
 }
 
@@ -234,6 +255,7 @@ $('#startBtn').on('click', () => {
     recognition.onend = () => {
       $('#startBtn').html('Start')
     }
+    stopVideoInput()
     recognition.abort()
   }
 })

@@ -235,6 +235,54 @@
         },
         {
             "inputs": [
+                "show webcam",
+                "show video stream",
+                "let me see what you can see",
+                "let me see your webcam",
+                "show me your webcam",
+                "show me what you see",
+                "display webcam video",
+                "show webcam video"
+            ],
+            "funcName": "showWebcamStream",
+            "responseArray": [
+                "Sure",
+                "Okay"
+            ]
+        },
+        {
+            "inputs": [
+                "don't show webcam",
+                "hide video stream",
+                "stop showing webcam",
+                "stop showing stream",
+                "hide your webcam",
+                "stop streaming what you see",
+                "don't display webcam video",
+                "stop displaying webcam video"
+            ],
+            "funcName": "hideWebcamStream",
+            "responseArray": [
+                "Sure",
+                "Okay"
+            ]
+        },
+        {
+            "inputs": [
+                "stop listening",
+                "disable microphone",
+                "shutdown microphone",
+                "stop microphone",
+                "disable listening"
+            ],
+            "funcName": "stopListening",
+            "responseArray": [
+                "Sure",
+                "Okay"
+            ]
+        },
+        {
+            "inputs": [
                 "can you define",
                 "define",
                 "whats the definition of",
