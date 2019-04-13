@@ -127,18 +127,17 @@ function setup() {
 function classifyVideo() {
   classifier = ml5.imageClassifier('MobileNet', video, (a) => {
     predictions = []
-    //Gather 10 predictions
+    //Gather 10 predictions for better reliability on moving video
+    //A little slow, but thats ok.
     for (var i = 0; i < 10; i++) {
-      classifier.predict(gotResult);
+      classifier.predict(gotPredictionResult);
     }
   });
 }
 
-// When we get a result
-function gotResult(err, results) {
+function gotPredictionResult(err, results) {
   predictions.push(results)
   if (predictions.length === 10) {
-    //todo: determine best/most consistant prediction
     var combined = {}
     for (var i = 0; i < predictions.length; i++) {
       for (var j = 0; j < predictions[i].length; j++) {
