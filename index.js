@@ -120,18 +120,6 @@ app.post('/giphy', function (req, res) {
   })
 })
 
-app.post('/read', function (req, res) {
-  let body = ''
-  req.on('data', chunk => {
-    body += chunk.toString()
-  })
-  req.on('end', () => {
-    fs.writeFile('save.json', body, 'utf8', () => {
-      res.end('ok')
-    })
-  })
-})
-
 /* serves all the static files */
 app.get(/^(.+)$/, function (req, res) {
   res.sendFile(path.join(__dirname, req.params[0]))
