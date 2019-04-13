@@ -184,7 +184,10 @@ recognition.onresult = (event) => {
         if (transcript.toLowerCase().indexOf(window.triggers[i]) === 0) {
           addtoConversation(transcript)
           window.commandWithParam = transcript.toLowerCase().substring(window.triggers[i].length).trim()
-          $.post('/response', transcript.toLowerCase().substring(window.triggers[i].length).trim(), (data) => {
+          if (transcript.toLowerCase().trim() === window.triggers[i]) {
+            window.commandWithParam = "hello"
+          }
+          $.post('/response', window.commandWithParam, (data) => {
             var words = window.commandWithParam.split(" ")
             var dataWords = data.split(" ")
             var greatestIndex = 0

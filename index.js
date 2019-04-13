@@ -31,20 +31,23 @@ app.post('/response', function (req, res) {
       if (a.rating > b.rating) return -1
       return 1
     })
-    let fuzzyResults = fuzzySet.get(body).sort((a, b) => {
-      if (a[0] > b[0]) return -1
-      return 1
-    })
-    for (var j = 0; j < fuzzyResults.length && j < 10; j++) {
-      var matchFound = false
-      for (var i = 0; i < matches.ratings.length && i < 10; i++) {
-        if (matches.ratings[i].target === fuzzyResults[j][1]) {
-          matches.ratings[i].rating = (matches.ratings[j].rating + fuzzyResults[j][0]) / 2
-          matchFound = true
+    let fuzzyResults = fuzzySet.get(body)
+    if (fuzzyResults) {
+      fuzzyResults.sort((a, b) => {
+        if (a[0] > b[0]) return -1
+        return 1
+      })
+      for (var j = 0; j < fuzzyResults.length && j < 10; j++) {
+        var matchFound = false
+        for (var i = 0; i < matches.ratings.length && i < 10; i++) {
+          if (matches.ratings[i].target === fuzzyResults[j][1]) {
+            matches.ratings[i].rating = (matches.ratings[j].rating + fuzzyResults[j][0]) / 2
+            matchFound = true
+          }
         }
-      }
-      if (!matchFound) {
-        matches.ratings.push({ target: fuzzyResults[j][1], rating: fuzzyResults[j][0] })
+        if (!matchFound) {
+          matches.ratings.push({ target: fuzzyResults[j][1], rating: fuzzyResults[j][0] })
+        }
       }
     }
     var highestValue = 0
