@@ -15,6 +15,8 @@ var video;
 var videoStream;
 var videoEnabled = false;
 var useTriggers = true;
+let classifier;
+let predictions = [];
 
 readData()
 /* -----------------------------
@@ -87,12 +89,63 @@ function closeEyes() {
   stopVideoInput();
 }
 
+function classifyCurrentVideo() {
+  if (videoEnabled) {
+    classifyVideo();
+  } else {
+    readOutLoud("Webcam is not enabled")
+  }
+}
+
 /* -----------------------------
           Helpers
 ------------------------------ */
 
 function setup() {
   noCanvas();
+}
+
+function classifyVideo() {
+  classifier = ml5.imageClassifier('MobileNet', video, (a) => {
+    predictions = []
+    //Gather 10 predictions
+    for (var i = 0; i < 10; i++) {
+      classifier.predict(gotResult);
+    }
+  });
+}
+
+// When we get a result
+function gotResult(err, results) {
+  predictions.push(results)
+  if (predictions.length === 10) {
+    //todo: determine best/most consistant prediction
+    var combined = {}
+    for (var i = 0; i < predictions.length; i++) {
+      for (var j = 0; j < predictions[i].length; j++) {
+        if (!combined[predictions[i][j].className]) {
+          combined[predictions[i][j].className] = { 'probability': parseFloat(nf(predictions[i][j].probability, 0, 2)), 'count': 1 }
+        } else {
+          combined[predictions[i][j].className].probability = ((combined[predictions[i][j].className].probability + (parseFloat(nf(predictions[i][j].probability, 0, 2)))) / 2)
+          combined[predictions[i][j].className].count += 1
+        }
+      }
+    }
+    var combinedArr = []
+    var keys = Object.keys(combined)
+    for (var i = 0; i < keys.length; i++) {
+      combinedArr.push({ className: keys[i], probability: combined[keys[i]].probability, count: combined[keys[i]].count })
+    }
+    combinedArr = combinedArr.sort((a, b) => {
+      if (a.probability > b.probability) return -1
+      if (a.probability < b.probability) return 1
+      if (a.count > b.count) return -1
+
+      return 1
+    })
+    var humanReadablePercent = Math.round(100 * parseFloat(combinedArr[0].probability))
+    readOutLoud("I think I am looking at a " + combinedArr[0].className + " with a probablity of " + humanReadablePercent + "%")
+  }
 }
 
 function startVideoInput() {
@@ -205,7 +258,7 @@ recognition.onresult = (event) => {
     $('#userInput').val('')
     var current = event.resultIndex
     var transcript = event.results[current][0].transcript
-    var mobileRepeatBug = (current === 1 && transcript === event.results[0][0].transcript)
+    var mobileRepeatBug = (current > 1 && transcript === event.results[0][0].transcript)
     if (!mobileRepeatBug) {
       console.log(transcript.toLowerCase())
       if (awaitingResponse) {

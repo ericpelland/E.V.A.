@@ -21,9 +21,12 @@
 * Watch any video on youtube just by asking
 * E.V.A. can search and embed the youtube video right into her (inter)face.
 * She can also close the video upon request.
-### Webcam Control (For future computer vision)
+### Webcam Control
 * Eva can open her eyes by enabling your webcam.  Just ask.
 * If you want to turn off her webcam, as usual, just ask.
+### Computer vision
+* E.V.A. can use the MobileNet classification model with ML5 and a TensorFlow back to classify images from video
+* Ask E.V.A. what she is looking at after enabling the webcam, and she will try her best!
 ### Dictionary
 * Get the definition of any word
 ### Conversation and Command Responses:
@@ -48,6 +51,8 @@
 * 'eva how are you today'
 * 'eva can you disable vision'
 * 'eva open your eyes'
+* 'eva what are you looking at'
+* 'eva what do you see'
 * 'eva disable trigger words'
 
 

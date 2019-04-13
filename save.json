@@ -247,6 +247,15 @@
         },
         {
             "inputs": [
+                "What are you looking at",
+                "Describe what you see",
+                "What do you see",
+                "Classify object"
+            ],
+            "funcName": "classifyCurrentVideo"
+        },
+        {
+            "inputs": [
                 "can you answer me what does the fox say",
                 "can you show me what does the fox say",
                 "find out what sound does a fox make",
