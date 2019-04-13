@@ -24,7 +24,7 @@
 ### Webcam Control
 * Eva can open her eyes by enabling your webcam.  Just ask.
 * If you want to turn off her webcam, as usual, just ask.
-### Computer vision
+### Computer Vision
 * E.V.A. can use the MobileNet classification model with ML5 and a TensorFlow back to classify images from video
 * Ask E.V.A. what she is looking at after enabling the webcam, and she will try her best!
 ### Dictionary

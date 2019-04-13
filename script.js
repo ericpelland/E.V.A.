@@ -144,7 +144,11 @@ function gotResult(err, results) {
       return 1
     })
     var humanReadablePercent = Math.round(100 * parseFloat(combinedArr[0].probability))
-    readOutLoud("I think I am looking at a " + combinedArr[0].className + " with a probablity of " + humanReadablePercent + "%")
+    if (humanReadablePercent < 50) {
+      readOutLoud("I am not sure, I doubt it but it might be a " + combinedArr[0].className)
+    } else {
+      readOutLoud("I think I am looking at a " + combinedArr[0].className + " with a probablity of " + humanReadablePercent + "%")
+    }
   }
 }
 
