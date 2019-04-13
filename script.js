@@ -4,7 +4,7 @@ var conversationTextarea = $('#conversation-textarea')
 var conversation = ''
 var awaitingResponse = false
 var awaitingResponseFromCommandId
-var awaitingResponseFromcommandstep = 0
+var awaitingResponseFromCommAndStep = 0
 var tempCommand
 var tempResponse
 window.triggers = []
@@ -82,12 +82,12 @@ function changeFace() {
 function addTrigger(trigger) {
   window.triggers.push(trigger)
   writeData()
-  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [trigger]))
+  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommAndStep].responseArray, [trigger]))
 }
 
 function addCommand(command) {
   tempCommand = command
-  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [command]))
+  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommAndStep].responseArray, [command]))
 }
 
 function addCommandResponse(response) {
@@ -97,7 +97,7 @@ function addCommandResponse(response) {
     responseArray: [tempResponse]
   })
   writeData()
-  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [response]))
+  readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommAndStep].responseArray, [response]))
 }
 
 function openEyes() {
@@ -288,13 +288,13 @@ recognition.onresult = (event) => {
     if (!mobileRepeatBug) {
       console.log(transcript.toLowerCase())
       if (awaitingResponse) {
-        eval(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].funcName)(transcript.toLowerCase())
-        if (awaitingResponseFromcommandstep === window.commands[awaitingResponseFromCommandId].steps.length - 1) {
-          awaitingResponseFromcommandstep = 0
+        eval(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromCommAndStep].funcName)(transcript.toLowerCase())
+        if (awaitingResponseFromCommAndStep === window.commands[awaitingResponseFromCommandId].steps.length - 1) {
+          awaitingResponseFromCommAndStep = 0
           awaitingResponse = false
           awaitingResponseFromCommandId = null
         }
-        awaitingResponseFromcommandstep += 1
+        awaitingResponseFromCommAndStep += 1
         return
       }
       window.commandWithParam = ''
@@ -329,7 +329,7 @@ recognition.onresult = (event) => {
               if (window.commands[j].inputs[k] === data) {
                 if (window.commands[j].steps && window.commands[j].steps.length > 0) {
                   awaitingResponseFromCommandId = j
-                  awaitingResponseFromcommandstep = 0
+                  awaitingResponseFromCommAndStep = 0
                   awaitingResponse = true
                 }
                 if (window.commands[j].funcName) {
