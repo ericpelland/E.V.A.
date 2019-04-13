@@ -54,6 +54,10 @@
 * 'eva what are you looking at'
 * 'eva what do you see'
 * 'eva disable trigger words'
+* 'eva stop listening'
+* 'eva show me what you can see'
+* 'eva hide webcam stream'
+* 'eva what are you looking at'
 
 
 ## Install
