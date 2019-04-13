@@ -51,7 +51,7 @@
             ],
             "responseArray": [
                 "Sure, what should the command be",
-                "Ok, what the command"
+                "Ok, what command"
             ],
             "steps": [
                 {
@@ -298,7 +298,7 @@
                 "I do appreciate your sense of humor"
             ],
             "responseArray": [
-                "I think I\u0027m pretty funny! Want to hear another?"
+                "I think I'm pretty funny! Want to hear another?"
             ]
         },
         {

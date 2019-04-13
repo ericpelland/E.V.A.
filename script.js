@@ -60,8 +60,8 @@ function addCommand(command) {
 function addCommandResponse(response) {
   tempResponse = response
   window.commands.push({
-    command: tempCommand,
-    response: tempResponse
+    inputs: [tempCommand],
+    responseArray: [tempResponse]
   })
   writeData()
   readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [response]))
