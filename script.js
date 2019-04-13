@@ -11,6 +11,10 @@ window.triggers = []
 window.commands = []
 var faceId = 0
 var nospeecherror = false
+var video;
+var videoStream;
+var videoEnabled = false;
+
 readData()
 /* -----------------------------
      Command Functions
@@ -34,7 +38,6 @@ function dictionarySearch(search) {
 
 function closeYoutube() {
   resetFace()
-  recognition.start()
 }
 
 function changeFace() {
@@ -67,9 +70,36 @@ function addCommandResponse(response) {
   readOutLoud(getResponseFromArrays(window.commands[awaitingResponseFromCommandId].steps[awaitingResponseFromcommandstep].responseArray, [response]))
 }
 
+function openEyes() {
+  startVideoInput();
+}
+
+function closeEyes() {
+  stopVideoInput();
+}
+
 /* -----------------------------
           Helpers
 ------------------------------ */
+
+function setup() {
+  noCanvas();
+}
+
+function startVideoInput() {
+  video = createCapture(VIDEO, (str) => {
+    videoStream = str
+    videoEnabled = true
+  });
+  video.parent('videoContainer');
+}
+
+function stopVideoInput() {
+  video.stop();
+  videoStream.getTracks()[0].stop();
+  document.getElementById('videoContainer').innerHTML = '';
+  videoEnabled = false;
+}
 
 function writeData() {
   $.post('/write', JSON.stringify({ triggers: window.triggers, commands: window.commands }), () => { })

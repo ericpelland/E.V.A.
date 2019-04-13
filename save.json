@@ -110,6 +110,60 @@
         },
         {
             "inputs": [
+                "open your eyes",
+                "can you enable vision",
+                "enable vision",
+                "can you open your eyes",
+                "open your eyes for me",
+                "can you open your eyes for me",
+                "enable camera",
+                "turn your camera on",
+                "can you enable the camera",
+                "camera on",
+                "enable webcam",
+                "turn your webcam on",
+                "turn off your webcam",
+                "can you enable the webcam",
+                "webcam on"
+            ],
+            "funcName": "openEyes",
+            "responseArray": [
+                "My eyes are now open",
+                "I have opened my eyes",
+                "At first I was blind, but now I see",
+                "Webcam enabled",
+                "Camera has been enabled"
+            ]
+        },
+        {
+            "inputs": [
+                "close your eyes",
+                "can you disable vision",
+                "disable vision",
+                "can you close your eyes",
+                "close your eyes for me",
+                "can you close your eyes for me",
+                "disable camera",
+                "turn your camera off",
+                "can you disable the camera",
+                "camera off",
+                "disable webcam",
+                "turn your webcam of",
+                "turn off your webcam",
+                "can you disable the webcam",
+                "webcam off"
+            ],
+            "funcName": "closeEyes",
+            "responseArray": [
+                "My eyes are now closed",
+                "I have shut my eyes",
+                "All I see is darkness",
+                "Webcam disabled",
+                "Camera has been disabled"
+            ]
+        },
+        {
+            "inputs": [
                 "let me watch a video of",
                 "can you show me a video of",
                 "show me a video of",
