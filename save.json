@@ -238,7 +238,9 @@
                 "can you define",
                 "define",
                 "whats the definition of",
+                "whats is the definition of",
                 "what is a",
+                "what is an",
                 "can you explain what a"
             ],
             "funcName": "dictionarySearch"

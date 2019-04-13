@@ -42,7 +42,7 @@ function youtube(search) {
 }
 
 function dictionarySearch(search) {
-  define(search)
+  define(search.split(" ")[search.split(" ").length - 1])
 }
 
 function closeYoutube() {
